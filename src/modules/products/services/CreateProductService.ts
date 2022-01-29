@@ -1,5 +1,6 @@
 import AppError from '@shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
+import Product from '../typeorm/entities/Product';
 import { ProductRepository } from '../typeorm/repositories/ProductsRepository';
 
 interface IProductsProps {
@@ -9,7 +10,11 @@ interface IProductsProps {
 }
 
 class CreateProductService {
-    public async execute({ name, price, quantity }: IProductsProps) {
+    public async execute({
+        name,
+        price,
+        quantity,
+    }: IProductsProps): Promise<Product> {
         const productsRepository = getCustomRepository(ProductRepository);
         const productExist = await productsRepository.findByName(name);
         if (productExist) {
