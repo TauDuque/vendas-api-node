@@ -9,10 +9,10 @@ import {
 @Entity('products')
 class Product {
     @PrimaryGeneratedColumn('uuid')
-        id: string;
+    id: string;
 
     @Column()
-        name: string;
+    name: string;
 
     @Column('decimal')
     price: number;
