@@ -15,9 +15,5 @@
     "rules": {
     "no-console": "warn",
     "prettier/prettier": "warn",
-    "indent"           : [1, 4],
-        "no-else-return"   : 1,
-        "semi"             : [1, "always"],
-        "space-unary-ops"  : 2
     }
 }
