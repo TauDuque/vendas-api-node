@@ -12,7 +12,6 @@ class CreateProductService {
     public async execute({ name, price, quantity }: IProductsProps) {
         const productsRepository = getCustomRepository(ProductRepository);
         const productExist = await productsRepository.findByName(name);
-
         if (productExist) {
             throw new AppError('This product already created.');
         }
