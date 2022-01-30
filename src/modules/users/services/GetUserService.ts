@@ -7,7 +7,7 @@ interface IRequest {
     id: string;
 }
 
-class GetProductService {
+class GetUserService {
     public async execute({ id }: IRequest): Promise<User | undefined> {
         const usersRepository = getCustomRepository(UsersRepository);
         const user = await usersRepository.findById(id);
@@ -20,4 +20,4 @@ class GetProductService {
     }
 }
 
-export default GetProductService;
+export default GetUserService;

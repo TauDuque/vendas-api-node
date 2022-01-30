@@ -8,16 +8,16 @@ interface IUserProps {
     name: string;
     email: string;
     password: string;
-    avatar: string
+    avatar: string;
 }
 
-class UpdateProductService {
+class UpdateUserService {
     public async execute({
         id,
         name,
         email,
         password,
-        avatar
+        avatar,
     }: IUserProps): Promise<User> {
         const usersRepository = getCustomRepository(UsersRepository);
         const user = await usersRepository.findById(id);
@@ -41,4 +41,4 @@ class UpdateProductService {
     }
 }
 
-export default UpdateProductService;
+export default UpdateUserService;

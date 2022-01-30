@@ -9,7 +9,7 @@ interface IProductsProps {
     password: string;
 }
 
-class CreateProductService {
+class CreateUserService {
     public async execute({
         name,
         email,
@@ -31,4 +31,4 @@ class CreateProductService {
     }
 }
 
-export default CreateProductService;
+export default CreateUserService;
