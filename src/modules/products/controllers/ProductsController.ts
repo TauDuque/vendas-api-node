@@ -46,8 +46,8 @@ export default class ProductsController {
         request: Request,
         response: Response,
     ): Promise<Response> {
-        const { id, name, price, quantity } = request.body;
-
+        const { name, price, quantity } = request.body;
+        const { id } = request.params;
         const productService = new UpdateProductService();
 
         const product = await productService.execute({
