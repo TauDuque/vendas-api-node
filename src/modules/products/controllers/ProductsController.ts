@@ -70,6 +70,6 @@ export default class ProductsController {
 
         await productService.execute({ id });
 
-        return response.json('Product sucefully deleted.');
+        return response.json('Product successfully deleted.');
     }
 }
