@@ -1,4 +1,3 @@
-import AppError from '@shared/errors/AppError';
 import { Request, Response } from 'express';
 import CreateUserService from '../services/CreateUserService';
 import DeleteUserService from '../services/DeleteUserService';
