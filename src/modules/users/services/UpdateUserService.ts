@@ -3,33 +3,58 @@ import { getCustomRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 import User from '../typeorm/entities/User';
 import UsersRepository from '../typeorm/repositories/UsersRepository';
+import { compare } from 'bcryptjs';
 
 interface IUserProps {
-    id: string;
+    user_id: string;
     name: string;
     email: string;
-    password: string;
+    password?: string;
+    old_password?: string;
 }
 
 class UpdateUserService {
     public async execute({
-        id,
+        user_id,
         name,
         email,
         password,
+        old_password,
     }: IUserProps): Promise<User> {
         const usersRepository = getCustomRepository(UsersRepository);
-        const user = await usersRepository.findById(id);
+        const user = await usersRepository.findById(user_id);
 
         if (!user) {
             throw new AppError('User not found.');
         }
 
-        const hashWord = await hash(password, 8);
+        const verifyEmail = await usersRepository.findByEmail(email);
+
+        if (verifyEmail && verifyEmail.id != user_id) {
+            throw new AppError(
+                'There already another user usingthis e-mail adress.',
+            );
+        }
+
+        if (password && !old_password) {
+            throw new AppError('Old password required.');
+        }
+
+        if (old_password && password) {
+            const verifyOldPassword = await compare(
+                old_password,
+                user.password,
+            );
+
+            if (!verifyOldPassword) {
+                throw new AppError('Password invalid.');
+            }
+
+            user.password = await hash(password, 8);
+        }
 
         user.name = name;
         user.email = email;
-        user.password = hashWord;
 
         await usersRepository.save(user);
 
