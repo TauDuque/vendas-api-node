@@ -1,3 +1,4 @@
+import RedisCache from '@shared/cache/RedisCache';
 import AppError from '@shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
 import Product from '../typeorm/entities/Product';
@@ -18,16 +19,23 @@ class UpdateProductService {
         quantity,
     }: IProductsProps): Promise<Product> {
         const productsRepository = getCustomRepository(ProductRepository);
-        const product = await productsRepository.findOne(id);
-        const repeated = await productsRepository.findByName(name);
 
-        if (repeated) {
-            throw new AppError('Name already taken.');
-        }
+        const product = await productsRepository.findOne(id);
 
         if (!product) {
             throw new AppError('Product not found.');
         }
+
+        // const repeated = await productsRepository.findByName(name);
+
+        // if (repeated) {
+        //     throw new AppError('Name already taken.');
+        // }
+
+        const redisCache = new RedisCache();
+
+        await redisCache.invalidate('api-vendas-PRODUCTS_LIST');
+
         product.name = name;
         product.price = price;
         product.quantity = quantity;
