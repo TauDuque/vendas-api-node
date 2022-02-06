@@ -4,6 +4,7 @@ import DeleteUserService from '../services/DeleteUserService';
 import GetUserService from '../services/GetUserService';
 import ShowUsersService from '../services/ShowUsersService';
 import UpdateUserService from '../services/UpdateUserService';
+import { instanceToInstance } from 'class-transformer';
 
 export default class UsersController {
     public async index(
@@ -14,7 +15,7 @@ export default class UsersController {
 
         const users = await userService.execute();
 
-        return response.json(users);
+        return response.json(instanceToInstance(users));
     }
 
     public async create(
@@ -30,20 +31,20 @@ export default class UsersController {
             password,
         });
 
-        return response.json(user);
+        return response.json(instanceToInstance(user));
     }
 
     public async getUser(
         request: Request,
         response: Response,
     ): Promise<Response> {
-        const { id } = request.params;
+        const { user_id } = request.params;
 
         const userService = new GetUserService();
 
-        const user = await userService.execute({ id });
+        const user = await userService.execute({ user_id });
 
-        return response.json(user);
+        return response.json(instanceToInstance(user));
     }
 
     public async update(
@@ -51,18 +52,18 @@ export default class UsersController {
         response: Response,
     ): Promise<Response> {
         const { name, email, password } = request.body;
-        const { id } = request.params;
+        const { user_id } = request.params;
 
         const userService = new UpdateUserService();
 
         const user = await userService.execute({
-            id,
+            user_id,
             name,
             email,
             password,
         });
 
-        return response.json(user);
+        return response.json(instanceToInstance(user));
     }
 
     public async delete(

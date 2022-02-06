@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import CreateSessionService from '../services/CreateSessionService';
+import { instanceToInstance } from 'class-transformer';
 
 export default class SessionController {
     public async create(
@@ -14,6 +15,6 @@ export default class SessionController {
             email,
             password,
         });
-        return response.json(userSession);
+        return response.json(instanceToInstance(userSession));
     }
 }
