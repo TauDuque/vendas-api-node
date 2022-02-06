@@ -5,15 +5,20 @@ import GetUserService from '../services/GetUserService';
 import ShowUsersService from '../services/ShowUsersService';
 import UpdateUserService from '../services/UpdateUserService';
 import { instanceToInstance } from 'class-transformer';
+import GetUserByNameService from '../services/GetUserByNameService';
+import { getCustomRepository } from 'typeorm';
+import UsersRepository from '../typeorm/repositories/UsersRepository';
 
 export default class UsersController {
     public async index(
         request: Request,
         response: Response,
     ): Promise<Response> {
+        const queryParams: any = request.query;
+
         const userService = new ShowUsersService();
 
-        const users = await userService.execute();
+        const users = await userService.execute(queryParams);
 
         return response.json(instanceToInstance(users));
     }
@@ -23,6 +28,7 @@ export default class UsersController {
         response: Response,
     ): Promise<Response> {
         const { name, email, password } = request.body;
+
         const userService = new CreateUserService();
 
         const user = await userService.execute({
